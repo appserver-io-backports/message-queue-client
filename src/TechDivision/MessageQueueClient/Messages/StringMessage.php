@@ -46,7 +46,7 @@ class StringMessage extends AbstractMessage {
     		// initialize the message id
     		$this->messageId = md5(uniqid(rand(), true));
     		
-    		return
+    		return;
 	    }
 	        
 	    throw new Exception("Message '$message' is not a valid string");

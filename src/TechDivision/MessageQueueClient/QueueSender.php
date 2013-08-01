@@ -23,7 +23,7 @@ class QueueSender {
 	
 	/**
 	 * Holds the QueueSession instance for sending the message.
-	 * @var \TechDivision\MessageQueue\QueueSession
+	 * @var \TechDivision\MessageQueueClient\QueueSession
 	 */
 	protected $session = null;
 
