@@ -1,2 +1,5 @@
 /target
 /build.properties
+/.buildpath
+/.project
+/.settings
