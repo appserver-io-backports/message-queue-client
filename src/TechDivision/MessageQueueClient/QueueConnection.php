@@ -232,7 +232,10 @@ class QueueConnection {
 	 * @return \TechDivision\MessageQueueClient\QueueResponse The response of the MessageQueue, or null
 	 */
 	public function send(Message $message, $validateResponse) {
-	    
+
+        // init connection
+        $this->connect();
+
 		// throw an exception if the connection is not established
 		if ($this->connected === false) {
 			throw new Exception("Can't send message because connection is not established");
@@ -250,6 +253,9 @@ class QueueConnection {
 			// return the QueueResponse
 			return QueueResponse::parse($response);
 		}
+
+        // disconnect connection
+        $this->disconnect();
 		
 		// return without to wait and validate the QueueResponse
 		return;
@@ -262,9 +268,13 @@ class QueueConnection {
 	 * @return QueueSession The initialized QueueSession instance
 	 */
 	public function createQueueSession() {
-	    
-		// establish a connection
-		$this->connect();
+        /**
+         * Disabled session stream socket type of connection.
+         *
+         * @author  Johann Zelger <jz@techdivision.com>
+         */
+        // establish a connection
+		// $this->connect();
 		
 		// initialize and register the session
 		$session = new QueueSession($this);
