@@ -1,5 +1,5 @@
 <?php
-	 
+
 namespace TechDivision\MessageQueueClient;
 
 use \TechDivision\MessageQueueClient\Queue;
@@ -20,7 +20,7 @@ class QueueSender {
 	 * @var \TechDivision\MessageQueue\Queue
 	 */
 	protected $queue = null;
-	
+
 	/**
 	 * Holds the QueueSession instance for sending the message.
 	 * @var \TechDivision\MessageQueueClient\QueueSession
@@ -30,7 +30,7 @@ class QueueSender {
 	/**
 	 * Initializes the QueueSender with the QueueSession and Queue instance
 	 * to use for sending the Message to the server.
-	 * 
+	 *
 	 * @param \TechDivision\MessageQueueClient\QueueSession $session The QueueSession instance for sending the message
 	 * @param \TechDivision\MessageQueueClient\Queue $queue The Queue instance used for sending the message
 	 * @return void
@@ -42,9 +42,9 @@ class QueueSender {
 
 	/**
 	 * Sends the passed Message to the server.
-	 * 
-	 * @param \TechDivision\MessageQueueClient\Message $message the Message to send
-	 * @param boolean $validateResponse If this flag is true, the QueueConnection waits for the MessageQueue response and validates it 
+	 *
+	 * @param \TechDivision\MessageQueueClient\Interfaces\Message $message the Message to send
+	 * @param boolean $validateResponse If this flag is true, the QueueConnection waits for the MessageQueue response and validates it
 	 * @return \TechDivision\MessageQueueClient\QueueResponse The response of the MessageQueue, or null
 	 */
 	public function send(Message $message, $validateResponse = false) {
