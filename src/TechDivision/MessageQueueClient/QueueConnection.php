@@ -17,7 +17,7 @@ use TechDivision\MessageQueueClient\Interfaces\Message;
 class QueueConnection {
 	
 	/**
-	 * TREU if the connection was already established, else FALSE.
+	 * TRUE if the connection was already established, else FALSE.
 	 * @var boolean
 	 */
 	private $connected = false;
@@ -148,7 +148,7 @@ class QueueConnection {
 	}
 	
 	/**
-	 * Return's the port for the connection.
+	 * Returns the port for the connection.
 	 * 
 	 * @return integer The port to use
 	 */
@@ -157,7 +157,7 @@ class QueueConnection {
 	}
 	
 	/**
-	 * Set's the client socket instance.
+	 * Sets the client socket instance.
 	 * 
 	 * @param \TechDivision\Socket\Client $socket The client socket instance 
 	 * @return \TechDivision\MessageQueueClient\QueueConnection The connection instance
@@ -168,7 +168,7 @@ class QueueConnection {
 	}
 	
 	/**
-	 * Return's the client socket instance.
+	 * Returns the client socket instance.
 	 * 
 	 * @return \TechDivision\Socket\Client The socket instance
 	 */
