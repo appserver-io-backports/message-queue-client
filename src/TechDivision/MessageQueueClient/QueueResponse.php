@@ -65,7 +65,7 @@ class QueueResponse {
 	
 	/**
 	 * Parses the MessageQueue response passed as String and 
-	 * initializes the QueueResponse with the splitted values.
+	 * initializes the QueueResponse with the split values.
 	 * 
 	 * @param string $response The response from the MessageQueue
 	 * @return QueueResponse The initialized instance
