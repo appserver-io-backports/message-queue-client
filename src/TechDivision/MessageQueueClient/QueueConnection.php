@@ -124,7 +124,6 @@ class QueueConnection {
 	 */
 	public function setAddress($address) {
 		$this->address = $address;
-		return $this;
 	}
 
 	/**
@@ -164,7 +163,6 @@ class QueueConnection {
 	 */
 	public function setSocket($socket) {
 	    $this->socket = $socket;
-	    return $this;
 	}
 	
 	/**
