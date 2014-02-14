@@ -101,13 +101,13 @@
     <!-- ==================================================================== -->
     <target name="build" description="Runs the PHPUnit tests and generates the code metrics.">
         <antcall target="phpcs"/>
-        <antcall target="run-tests"/>
         <!--
-    	<antcall target="apidoc"/>
-    	<antcall target="phpcpd"/>
-    	<antcall target="phploc"/>
-    	<antcall target="pdepend"/>
-    	<antcall target="phpmd"/>
-    	-->
+        <antcall target="run-tests"/>
+        <antcall target="apidoc"/>
+        <antcall target="phpcpd"/>
+        <antcall target="phploc"/>
+        <antcall target="pdepend"/>
+        <antcall target="phpmd"/>
+        -->
     </target>
 </project>
