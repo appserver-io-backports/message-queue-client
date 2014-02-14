@@ -1,102 +1,117 @@
 <?php
-
 /**
  * TechDivision\MessageQueueClient\MessageMonitor
  *
- * NOTICE OF LICENSE
+ * PHP version 5
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * @category   Appserver
+ * @package    TechDivision_MessageQueueClient
+ * @subpackage Messages
+ * @author     Tim Wagner <tw@techdivision.com>
+ * @author     Markus Stockbauer <ms@techdivision.com>
+ * @copyright  2013 TechDivision GmbH <info@techdivision.com>
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link       http://www.appserver.io
  */
 
 namespace TechDivision\MessageQueueClient\Messages;
- 
+
 /**
+ * Class MessageMonitor
  *
- * @package     TechDivision\MessageQueueClient
- * @copyright  	Copyright (c) 2010 <info@techdivision.com> - TechDivision GmbH
- * @license    	http://opensource.org/licenses/osl-3.0.php
- *              Open Software License (OSL 3.0)
- * @author      Markus Stockbauer <ms@techdivision.com>
- * @author      Tim Wagner <tw@techdivision.com>
+ * @category   Appserver
+ * @package    TechDivision_MessageQueueClient
+ * @subpackage Messages
+ * @author     Tim Wagner <tw@techdivision.com>
+ * @author     Markus Stockbauer <ms@techdivision.com>
+ * @copyright  2013 TechDivision GmbH <info@techdivision.com>
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link       http://www.appserver.io
  */
-class MessageMonitor {
-	
-	/**
-	 * The target counter for monitoring the message.
-	 * @var integer
-	 */
-	protected $target = 0;
-	
-	/**
-	 * The row counter for monitoring the message.
-	 * @var integer
-	 */
-	protected $rowCount = 0;
-	
-	/**
-	 * The log message for monitoring the message.
-	 * @var string
-	 */
-	protected $logMessage = '';
+class MessageMonitor
+{
 
-	/**
-	 * Initializes the queue with the name to use.
-	 * 
-	 * @param 
-	 * @param string $name Holds the queue name to use
-	 * @return void
-	 */
-	public function __construct($target, $logMessage) {
-		$this->target = $target;
-		$this->logMessage = $logMessage;
-	}
+    /**
+     * The target counter for monitoring the message.
+     * @var integer
+     */
+    protected $target = 0;
 
-	/**
-	 * Sets the log message.
-	 * 
-	 * @param string $logMessage The log message
-	 * @return void
-	 */
-	public function setLogMessage($logMessage) {
-		$this->logMessage = $logMessage;
-	}
+    /**
+     * The row counter for monitoring the message.
+     * @var integer
+     */
+    protected $rowCount = 0;
 
-	/**
-	 * Returns the row counter.
-	 * 
-	 * @param integer $rowCount The row counter
-	 * @return void
-	 */
-	public function setRowCount($rowCount) {
-		$this->rowCount = $rowCount;
-	}
+    /**
+     * The log message for monitoring the message.
+     * @var string
+     */
+    protected $logMessage = '';
 
-	/**
-	 * Returns the log message.
-	 * 
-	 * @return string The log message
-	 */
-	public function getLogMessage() {
-		return $this->logMessage;
-	}
+    /**
+     * Initializes the queue with the name to use.
+     *
+     * @param int    $target     The target
+     * @param string $logMessage Holds the queue name to use
+     */
+    public function __construct($target, $logMessage)
+    {
+        $this->target = $target;
+        $this->logMessage = $logMessage;
+    }
 
-	/**
-	 * Returns the row counter.
-	 * 
-	 * @return integer The row counter
-	 */
-	public function getRowCount() {
-		return $this->rowCount;
-	}
+    /**
+     * Sets the log message.
+     *
+     * @param string $logMessage The log message
+     *
+     * @return void
+     */
+    public function setLogMessage($logMessage)
+    {
+        $this->logMessage = $logMessage;
+    }
 
-	/**
-	 * Returns the target counter.
-	 * 
-	 * @return integer The target counter
-	 */
-	public function getTarget() {
-		return $this->target;
-	}
+    /**
+     * Returns the row counter.
+     *
+     * @param integer $rowCount The row counter
+     *
+     * @return void
+     */
+    public function setRowCount($rowCount)
+    {
+        $this->rowCount = $rowCount;
+    }
+
+    /**
+     * Returns the log message.
+     *
+     * @return string The log message
+     */
+    public function getLogMessage()
+    {
+        return $this->logMessage;
+    }
+
+    /**
+     * Returns the row counter.
+     *
+     * @return integer The row counter
+     */
+    public function getRowCount()
+    {
+        return $this->rowCount;
+    }
+
+    /**
+     * Returns the target counter.
+     *
+     * @return integer The target counter
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
 }

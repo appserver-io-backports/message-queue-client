@@ -1,23 +1,41 @@
 <?php
 
+/**
+ * TechDivision\MessageQueueClient\Interfaces\Worker
+ *
+ * PHP version 5
+ *
+ * @category   Appserver
+ * @package    TechDivision_MessageQueueClient
+ * @subpackage Interfaces
+ * @author     Tim Wagner <tw@techdivision.com>
+ * @copyright  2013 TechDivision GmbH <info@techdivision.com>
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link       http://www.appserver.io
+ */
+
 namespace TechDivision\MessageQueueClient\Interfaces;
-	 
+
 /**
  * The interface for all handlers.
- * 
- * @package	mqclient
- * @author	wagnert <tw@struts4php.org>
- * @version $Revision: 1.4 $ $Date: 2009-01-03 13:11:54 $
- * @copyright struts4php.org
- * @link www.struts4php.org
+ *
+ * @category   Appserver
+ * @package    TechDivision_MessageQueueClient
+ * @subpackage Interfaces
+ * @author     Tim Wagner <tw@techdivision.com>
+ * @copyright  2013 TechDivision GmbH <info@techdivision.com>
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link       http://www.appserver.io
  */
-interface Worker {
+interface Worker
+{
     
     /**
      * Updates the message monitor.
      * 
      * @param Message $message The message to update the monitor for
+     *
      * @return void
      */
-	public function updateMonitor(Message $message);
+    public function updateMonitor(Message $message);
 }

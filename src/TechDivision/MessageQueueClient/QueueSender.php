@@ -1,4 +1,16 @@
 <?php
+/**
+ * TechDivision\MessageQueueClient\QueueSender
+ *
+ * PHP version 5
+ *
+ * @category  Appserver
+ * @package   TechDivision_MessageQueueClient
+ * @author    Tim Wagner <tw@techdivision.com>
+ * @copyright 2013 TechDivision GmbH <info@techdivision.com>
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      http://www.appserver.io
+ */
 
 namespace TechDivision\MessageQueueClient;
 
@@ -7,49 +19,59 @@ use \TechDivision\MessageQueueClient\QueueSession;
 use \TechDivision\MessageQueueClient\Interfaces\Message;
 
 /**
- * @package	mqclient
- * @author	wagnert <tw@struts4php.org>
- * @version $Revision: 1.4 $ $Date: 2009-01-03 13:11:54 $
- * @copyright struts4php.org
- * @link www.struts4php.org
+ * Class QueueSender
+ *
+ * @category  Appserver
+ * @package   TechDivision_MessageQueueClient
+ * @author    Tim Wagner <tw@techdivision.com>
+ * @copyright 2013 TechDivision GmbH <info@techdivision.com>
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      http://www.appserver.io
  */
-class QueueSender {
+class QueueSender
+{
 
-	/**
-	 * Holds the Queue instance used for sending the message.
-	 * @var \TechDivision\MessageQueue\Queue
-	 */
-	protected $queue = null;
+    /**
+     * Holds the Queue instance used for sending the message.
+     *
+     * @var \TechDivision\MessageQueue\Queue
+     */
+    protected $queue = null;
 
-	/**
-	 * Holds the QueueSession instance for sending the message.
-	 * @var \TechDivision\MessageQueueClient\QueueSession
-	 */
-	protected $session = null;
+    /**
+     * Holds the QueueSession instance for sending the message.
+     *
+     * @var \TechDivision\MessageQueueClient\QueueSession
+     */
+    protected $session = null;
 
-	/**
-	 * Initializes the QueueSender with the QueueSession and Queue instance
-	 * to use for sending the Message to the server.
-	 *
-	 * @param \TechDivision\MessageQueueClient\QueueSession $session The QueueSession instance for sending the message
-	 * @param \TechDivision\MessageQueueClient\Queue $queue The Queue instance used for sending the message
-	 * @return void
-	 */
-	public function __construct(QueueSession $session, Queue $queue) {
-		$this->session = $session;
-		$this->queue = $queue;
-	}
+    /**
+     * Initializes the QueueSender with the QueueSession and Queue instance
+     * to use for sending the Message to the server.
+     *
+     * @param \TechDivision\MessageQueueClient\QueueSession $session The QueueSession instance for sending the message
+     * @param \TechDivision\MessageQueueClient\Queue        $queue   The Queue instance used for sending the message
+     *
+     * @return void
+     */
+    public function __construct(QueueSession $session, Queue $queue)
+    {
+        $this->session = $session;
+        $this->queue = $queue;
+    }
 
-	/**
-	 * Sends the passed Message to the server.
-	 *
-	 * @param \TechDivision\MessageQueueClient\Interfaces\Message $message the Message to send
-	 * @param boolean $validateResponse If this flag is true, the QueueConnection waits for the MessageQueue response and validates it
-	 * @return \TechDivision\MessageQueueClient\QueueResponse The response of the MessageQueue, or null
-	 */
-	public function send(Message $message, $validateResponse = false) {
-		$message->setDestination($this->queue);
-		$message->setSessionId($this->session->getId());
-		return $this->session->send($message, $validateResponse);
-	}
+    /**
+     * Sends the passed Message to the server.
+     *
+     * @param \TechDivision\MessageQueueClient\Interfaces\Message $message          the Message to send
+     * @param boolean                                             $validateResponse If this flag is true, the QueueConnection waits for the MessageQueue response and validates it
+     *
+     * @return \TechDivision\MessageQueueClient\QueueResponse The response of the MessageQueue, or null
+     */
+    public function send(Message $message, $validateResponse = false)
+    {
+        $message->setDestination($this->queue);
+        $message->setSessionId($this->session->getId());
+        return $this->session->send($message, $validateResponse);
+    }
 }
