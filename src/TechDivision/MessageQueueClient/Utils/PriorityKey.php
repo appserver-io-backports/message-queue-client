@@ -1,13 +1,17 @@
 <?php
-
 /**
  * TechDivision\MessageQueueClient\Utils\PriorityKey
  *
- * NOTICE OF LICENSE
+ * PHP version 5
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * @category   Appserver
+ * @package    TechDivision_MessageQueueClient
+ * @subpackage Utils
+ * @author     Markus Stockbauer <ms@techdivision.com>
+ * @author     Tim Wagner <tw@techdivision.com>
+ * @copyright  2013 TechDivision GmbH <info@techdivision.com>
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link       http://www.appserver.io
  */
 
 namespace TechDivision\MessageQueueClient\Utils;
@@ -16,20 +20,23 @@ namespace TechDivision\MessageQueueClient\Utils;
  * This class holds the interface for all 
  * PriorityKeys used as message priority.
  *
- * @package     TechDivision\MessageQueueClient
- * @copyright  	Copyright (c) 2010 <info@techdivision.com> - TechDivision GmbH
- * @license    	http://opensource.org/licenses/osl-3.0.php
- *              Open Software License (OSL 3.0)
- * @author      Markus Stockbauer <ms@techdivision.com>
- * @author      Tim Wagner <tw@techdivision.com>
+ * @category   Appserver
+ * @package    TechDivision_MessageQueueClient
+ * @subpackage Utils
+ * @author     Markus Stockbauer <ms@techdivision.com>
+ * @author     Tim Wagner <tw@techdivision.com>
+ * @copyright  2013 TechDivision GmbH <info@techdivision.com>
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link       http://www.appserver.io
  */
-interface PriorityKey {
-	
-	/**
-	 * Returns the key value of the
-	 * PriorityKey instance.
-	 * 
-	 * @return integer The key value
-	 */
-	public function getPriority();
+interface PriorityKey
+{
+
+    /**
+     * Returns the key value of the
+     * PriorityKey instance.
+     *
+     * @return integer The key value
+     */
+    public function getPriority();
 }
