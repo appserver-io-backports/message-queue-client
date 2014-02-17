@@ -183,7 +183,7 @@ class QueueConnection
      *
      * @param \TechDivision\Socket\Client $socket The client socket instance
      *
-     * @return \TechDivision\MessageQueueClient\QueueConnection The connection instance
+     * @return void
      */
     public function setSocket($socket)
     {
