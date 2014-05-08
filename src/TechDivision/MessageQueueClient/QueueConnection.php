@@ -1,136 +1,104 @@
 <?php
+
 /**
  * TechDivision\MessageQueueClient\QueueConnection
  *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
  * PHP version 5
  *
- * @category  Appserver
+ * @category  Library
  * @package   TechDivision_MessageQueueClient
  * @author    Tim Wagner <tw@techdivision.com>
- * @copyright 2013 TechDivision GmbH <info@techdivision.com>
+ * @copyright 2014 TechDivision GmbH <info@techdivision.com>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://github.com/techdivision/TechDivision_MessageQueueClient
  * @link      http://www.appserver.io
  */
 
 namespace TechDivision\MessageQueueClient;
 
-use TechDivision\Socket\Client;
+use TechDivision\WebServer\Sockets\StreamSocket;
+use TechDivision\MessageQueueProtocol\Message;
+use TechDivision\MessageQueueProtocol\QueueResponse;
+use TechDivision\MessageQueueProtocol\MessageQueueParser;
+use TechDivision\MessageQueueProtocol\MessageQueueProtocol;
 use TechDivision\MessageQueueClient\QueueSession;
-use TechDivision\MessageQueueClient\QueueResponse;
-use TechDivision\MessageQueueClient\Interfaces\Message;
 
 /**
- * Class QueueConnection
+ * A connection implementation that handles the connection to the message queue.
  *
- * @category  Appserver
+ * @category  Library
  * @package   TechDivision_MessageQueueClient
  * @author    Tim Wagner <tw@techdivision.com>
- * @copyright 2013 TechDivision GmbH <info@techdivision.com>
+ * @copyright 2014 TechDivision GmbH <info@techdivision.com>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://github.com/techdivision/TechDivision_MessageQueueClient
  * @link      http://www.appserver.io
  */
 class QueueConnection
 {
 
-    /**
-     * TRUE if the connection was already established, else FALSE.
-     * @var boolean
-     */
-    private $connected = false;
+	/**
+	 * The default transport to use.
+	 *
+	 * @var string
+	 */
+	protected $transport = 'tcp';
 
     /**
      * Holds the IP address or domain name of the server the message queue is running on.
+     *
      * @var string
      */
-    private $address = "127.0.0.1";
+    protected $address = "127.0.0.1";
 
     /**
      * Holds the port for the connection.
+     *
      * @var integer
      */
-    private $port = 8587;
-
-    /**
-     * Holds the flag to use a persistent server connection, if yes the flag is TRUE.
-     * @var boolean
-     */
-    private $persistent = true;
-
-    /**
-     * Holds the connection timeout in seconds or null for no timeout.
-     * @var integer
-     */
-    private $timeout = null;
+    protected $port = 8587;
 
     /**
      * Holds an ArrayList with the initialized sessions.
+     *
      * @var ArrayList
      */
-    private $sessions = null;
+    protected $sessions = null;
 
     /**
-     * Holds the socket for the connection.
-     * @var Net_Socket
+     * The message queue parser instance.
+     *
+     * @var \TechDivision\MessageQueueProtocol\MessageQueueParser
      */
-    private $socket = null;
+    protected $parser;
 
     /**
-     * The actual connection id.
-     * @var integer
-     */
-    private $id = 0;
-
-    /**
-     * Is TRUE if the connection should be validated, else FALSE.
-     * @var boolean
-     */
-    private $validate = false;
-
-    /**
-     * Initializes the QueueConnection and the
-     * socket.
+     * Initializes the QueueConnection and the socket.
+     *
+     * @return void
      */
     public function __construct()
     {
+    	// initialize the message queue parser and the session
+    	$this->parser = new MessageQueueParser();
         $this->sessions = new \ArrayObject();
     }
 
     /**
-     * Initializes the connection by starting
-     * the socket.
+     * Returns the parser to process the message.
      *
-     * @return void
-     *
-     * @throws \Exception Is thrown if connection can't be established
+     * @return \TechDivision\MessageQueueProtocol\MessageQueueParser The parser instance
      */
-    protected function connect()
-    {
-
-        // check if the connection was already established
-        if ($this->connected === false) {
-
-            // if not, try to connect to the MessageQueue
-            $socket = new Client($this->getAddress(), $this->getPort());
-
-            $this->setSocket($socket->start()->setBlock());
-
-            // check if the connection should be validated
-            if ($this->validate === true) {
-
-                // read the response from the Socket
-                $response = $this->getSocket()->readLine();
-
-                // check the QueueResponse
-                $queueResponse = QueueResponse::parse($response);
-
-                // parse and return the connection id
-                $this->id = $queueResponse->getMessage();
-            }
-
-            // set the the connected flag
-            $this->connected = true;
-        }
-    }
+	public function getParser()
+	{
+		return $this->parser;
+	}
 
     /**
      * Sets the IP address or domain name of the server the
@@ -179,15 +147,25 @@ class QueueConnection
     }
 
     /**
-     * Sets the client socket instance.
+     *  Sets the transport to use.
      *
-     * @param \TechDivision\Socket\Client $socket The client socket instance
+     * @param integer $port The transport to use
      *
      * @return void
      */
-    public function setSocket($socket)
+    public function setTransport($transport)
     {
-        $this->socket = $socket;
+        $this->transport = $transport;
+    }
+
+    /**
+     * Returns the transport to use.
+     *
+     * @return integer The transport to use.
+     */
+    public function getTransport()
+    {
+        return $this->transport;
     }
 
     /**
@@ -197,100 +175,53 @@ class QueueConnection
      */
     public function getSocket()
     {
-        return $this->socket;
     }
 
     /**
-     * Sets  the connection timeout in seconds.
-     *
-     * @param integer $timeout Holds the connection timeout
+     * Initializes the connection by starting the socket.
      *
      * @return void
      */
-    public function setTimeout($timeout)
+    protected function connect()
     {
-        $this->timeout = $timeout;
     }
 
     /**
-     * Sets  the flag to use a persistent server
-     * connection to TRUE.
-     *
-     * @param boolean $persistent Holds the flag to use a persistent server connection or not
+     * Closes the connection to the server by closing the socket.
      *
      * @return void
-     */
-    public function setPersistent($persistent = true)
-    {
-        $this->persistent = $persistent;
-    }
-
-    /**
-     * Closes the connection to the server by
-     * closing the socket.
-     *
-     * @return void
-     * @throws Exception Is thrown if connection can't be closed
      */
     public function disconnect()
     {
-
-        // close the connection
-        $this->getSocket()->close();
-
-        // set the disconnected flag to false
-        $this->connected = false;
     }
 
     /**
-     * Has to be invoked to validate that the
-     * connection was successfully established.
-     *
-     * @return void
-     */
-    public function validate()
-    {
-        $this->validate = true;
-    }
-
-    /**
-     * Sends a Message to the server by writing
-     * it to the socket.
+     * Sends a Message to the server by writing it to the socket.
      *
      * @param \TechDivision\MessageQueueClient\Interfaces\Message $message          Holds the message to send
      * @param boolean                                             $validateResponse If this flag is true, the QueueConnection waits for the MessageQueue response and validates it
      *
      * @return \TechDivision\MessageQueueClient\QueueResponse The response of the MessageQueue, or null
      */
-    public function send(Message $message, $validateResponse)
+    public function send(Message $message, $validateResponse = false)
     {
 
-        // init connection
-        $this->connect();
+    	// connect to the persistence container
+    	$clientConnection = StreamSocket::getClientInstance(
+    		$this->getTransport() . '://' . $this->getAddress() . ':' . $this->getPort()
+    	);
 
-        // throw an exception if the connection is not established
-        if ($this->connected === false) {
-            throw new Exception("Can't send message because connection is not established");
-        }
+    	// serialize the message and write it to the socket
+    	$packed = MessageQueueProtocol::pack($message);
 
-        // write the Message to the MessageQueue
-        $this->getSocket()->sendLine(serialize($message));
+    	// invoke the remote method call
+    	$clientConnection->write(MessageQueueProtocol::prepareMessageHeader($packed));
+    	$clientConnection->write($packed);
 
-        // check if the QueueResponse has to be validated
+        // check if we should wait for the response and it has to be validated
         if ($validateResponse === true) {
-
-            // read the response from the Socket
-            $response = $this->getSocket()->readLine();
-
-            // return the QueueResponse
-            return QueueResponse::parse($response);
+        	return $this->getParser()->parseResponse($clientConnection->readLine());
         }
-
-        // disconnect connection
-        $this->disconnect();
-
-        // return without to wait and validate the QueueResponse
-        return;
     }
 
     /**
@@ -301,39 +232,6 @@ class QueueConnection
      */
     public function createQueueSession()
     {
-        /**
-         * Disabled session stream socket type of connection.
-         *
-         * @author  Johann Zelger <jz@techdivision.com>
-         */
-        // establish a connection
-        // $this->connect();
-
-        // initialize and register the session
-        $session = new QueueSession($this);
-
-        // return the session
-        return $this->sessions[] = $session;
-    }
-
-    /**
-     * Returns the connection id.
-     *
-     * @return integer The unique id
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Returns TRUE if the connection is established,
-     * else FALSE.
-     *
-     * @return boolean TRUE if the connection is established, else FALSE
-     */
-    public function isConnected()
-    {
-        return $this->connected;
+        return $this->sessions[] = new QueueSession($this);
     }
 }

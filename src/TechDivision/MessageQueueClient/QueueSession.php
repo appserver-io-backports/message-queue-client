@@ -2,31 +2,39 @@
 /**
  * TechDivision\MessageQueueClient\QueueSession
  *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
  * PHP version 5
  *
- * @category  Appserver
+ * @category  Library
  * @package   TechDivision_MessageQueueClient
  * @author    Tim Wagner <tw@techdivision.com>
- * @copyright 2013 TechDivision GmbH <info@techdivision.com>
+ * @copyright 2014 TechDivision GmbH <info@techdivision.com>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://github.com/techdivision/TechDivision_MessageQueueClient
  * @link      http://www.appserver.io
  */
 
 namespace TechDivision\MessageQueueClient;
 
-use \TechDivision\MessageQueueClient\Queue;
+use \TechDivision\MessageQueueProtocol\Queue;
+use \TechDivision\MessageQueueProtocol\Message;
 use \TechDivision\MessageQueueClient\QueueSender;
 use \TechDivision\MessageQueueClient\QueueConnection;
-use \TechDivision\MessageQueueClient\Interfaces\Message;
 
 /**
  * Class QueueSession
  *
- * @category  Appserver
+ * @category  Library
  * @package   TechDivision_MessageQueueClient
  * @author    Tim Wagner <tw@techdivision.com>
- * @copyright 2013 TechDivision GmbH <info@techdivision.com>
+ * @copyright 2014 TechDivision GmbH <info@techdivision.com>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://github.com/techdivision/TechDivision_MessageQueueClient
  * @link      http://www.appserver.io
  */
 class QueueSession
