@@ -21,9 +21,9 @@
 
 namespace TechDivision\MessageQueueClient;
 
-use \TechDivision\MessageQueueClient\Queue;
+use \TechDivision\MessageQueueProtocol\Message;
+use \TechDivision\MessageQueueProtocol\Queue;
 use \TechDivision\MessageQueueClient\QueueSession;
-use \TechDivision\MessageQueueClient\Interfaces\Message;
 
 /**
  * Class QueueSender
@@ -71,8 +71,8 @@ class QueueSender
     /**
      * Sends the passed Message to the server.
      *
-     * @param \TechDivision\MessageQueueClient\Interfaces\Message $message          the Message to send
-     * @param boolean                                             $validateResponse If this flag is true, the QueueConnection waits for the MessageQueue response and validates it
+     * @param \TechDivision\MessageQueueProtocol\Message $message          the Message to send
+     * @param boolean                                    $validateResponse If this flag is true, the QueueConnection waits for the MessageQueue response and validates it
      *
      * @return \TechDivision\MessageQueueClient\QueueResponse The response of the MessageQueue, or null
      */

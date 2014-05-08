@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\MessageQueueClient\Queue
+ * TechDivision\MessageQueueClient\MessageQueue
  *
  * NOTICE OF LICENSE
  *
@@ -22,7 +22,7 @@
 
 namespace TechDivision\MessageQueueClient;
 
-use TechDivision\MessageQueueProtocol\Queue as MessageQueue;
+use TechDivision\MessageQueueProtocol\Queue;
 
 /**
  * Class Queue
@@ -35,7 +35,7 @@ use TechDivision\MessageQueueProtocol\Queue as MessageQueue;
  * @link      https://github.com/techdivision/TechDivision_MessageQueueClient
  * @link      http://www.appserver.io
  */
-class Queue implements MessageQueue
+class MessageQueue implements Queue
 {
 
     /**
@@ -72,10 +72,10 @@ class Queue implements MessageQueue
      *
      * @param string $name Holds the queue name to use
      *
-     * @return \TechDivision\MessageQueueClient\Queue The instance
+     * @return \TechDivision\MessageQueueClient\MessageQueue The instance
      */
     public static function createQueue($name)
     {
-        return new Queue($name);
+        return new MessageQueue($name);
     }
 }

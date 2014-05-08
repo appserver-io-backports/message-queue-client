@@ -21,10 +21,10 @@
 
 namespace TechDivision\MessageQueueClient;
 
-use \TechDivision\MessageQueueClient\Queue;
+use \TechDivision\MessageQueueProtocol\Queue;
+use \TechDivision\MessageQueueProtocol\Message;
 use \TechDivision\MessageQueueClient\QueueSender;
 use \TechDivision\MessageQueueClient\QueueConnection;
-use \TechDivision\MessageQueueClient\Interfaces\Message;
 
 /**
  * Class QueueSession
