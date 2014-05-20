@@ -39,8 +39,6 @@ class QueueConnectionFactory
 
     /**
      * Private constructor to use class only in static context.
-     *
-     * @return  void
      */
     protected function __construct()
     {

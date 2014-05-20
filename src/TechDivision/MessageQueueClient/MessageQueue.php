@@ -49,8 +49,6 @@ class MessageQueue implements Queue
      * Initializes the queue with the name to use.
      *
      * @param string $name Holds the queue name to use
-     *
-     * @return void
      */
     private function __construct($name)
     {

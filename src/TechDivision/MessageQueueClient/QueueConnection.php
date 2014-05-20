@@ -43,12 +43,12 @@ use TechDivision\MessageQueueClient\QueueSession;
 class QueueConnection
 {
 
-	/**
-	 * The default transport to use.
-	 *
-	 * @var string
-	 */
-	protected $transport = 'tcp';
+    /**
+     * The default transport to use.
+     *
+     * @var string
+     */
+    protected $transport = 'tcp';
 
     /**
      * Holds the IP address or domain name of the server the message queue is running on.
@@ -80,13 +80,11 @@ class QueueConnection
 
     /**
      * Initializes the QueueConnection and the socket.
-     *
-     * @return void
      */
     public function __construct()
     {
-    	// initialize the message queue parser and the session
-    	$this->parser = new MessageQueueParser();
+        // initialize the message queue parser and the session
+        $this->parser = new MessageQueueParser();
         $this->sessions = new \ArrayObject();
     }
 
@@ -95,10 +93,10 @@ class QueueConnection
      *
      * @return \TechDivision\MessageQueueProtocol\MessageQueueParser The parser instance
      */
-	public function getParser()
-	{
-		return $this->parser;
-	}
+    public function getParser()
+    {
+        return $this->parser;
+    }
 
     /**
      * Sets the IP address or domain name of the server the
@@ -149,7 +147,7 @@ class QueueConnection
     /**
      *  Sets the transport to use.
      *
-     * @param integer $port The transport to use
+     * @param integer $transport The transport to use
      *
      * @return void
      */
@@ -199,28 +197,29 @@ class QueueConnection
      * Sends a Message to the server by writing it to the socket.
      *
      * @param \TechDivision\MessageQueueClient\Interfaces\Message $message          Holds the message to send
-     * @param boolean                                             $validateResponse If this flag is true, the QueueConnection waits for the MessageQueue response and validates it
+     * @param boolean                                             $validateResponse If this flag is true,
+     *      the QueueConnection waits for the MessageQueue response and validates it
      *
      * @return \TechDivision\MessageQueueClient\QueueResponse The response of the MessageQueue, or null
      */
     public function send(Message $message, $validateResponse = false)
     {
 
-    	// connect to the persistence container
-    	$clientConnection = StreamSocket::getClientInstance(
-    		$this->getTransport() . '://' . $this->getAddress() . ':' . $this->getPort()
-    	);
+        // connect to the persistence container
+        $clientConnection = StreamSocket::getClientInstance(
+            $this->getTransport() . '://' . $this->getAddress() . ':' . $this->getPort()
+        );
 
-    	// serialize the message and write it to the socket
-    	$packed = MessageQueueProtocol::pack($message);
+        // serialize the message and write it to the socket
+        $packed = MessageQueueProtocol::pack($message);
 
-    	// invoke the remote method call
-    	$clientConnection->write(MessageQueueProtocol::prepareMessageHeader($packed));
-    	$clientConnection->write($packed);
+        // invoke the remote method call
+        $clientConnection->write(MessageQueueProtocol::prepareMessageHeader($packed));
+        $clientConnection->write($packed);
 
         // check if we should wait for the response and it has to be validated
         if ($validateResponse === true) {
-        	return $this->getParser()->parseResponse($clientConnection->readLine());
+            return $this->getParser()->parseResponse($clientConnection->readLine());
         }
     }
 

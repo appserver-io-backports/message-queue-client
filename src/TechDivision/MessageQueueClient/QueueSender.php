@@ -59,8 +59,6 @@ class QueueSender
      *
      * @param \TechDivision\MessageQueueClient\QueueSession $session The QueueSession instance for sending the message
      * @param \TechDivision\MessageQueueClient\Queue        $queue   The Queue instance used for sending the message
-     *
-     * @return void
      */
     public function __construct(QueueSession $session, Queue $queue)
     {
