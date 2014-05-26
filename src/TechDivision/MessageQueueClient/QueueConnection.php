@@ -22,7 +22,7 @@
 
 namespace TechDivision\MessageQueueClient;
 
-use TechDivision\WebServer\Sockets\StreamSocket;
+use TechDivision\Server\Sockets\StreamSocket;
 use TechDivision\MessageQueueProtocol\Message;
 use TechDivision\MessageQueueProtocol\QueueResponse;
 use TechDivision\MessageQueueProtocol\MessageQueueParser;
