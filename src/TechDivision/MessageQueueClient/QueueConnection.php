@@ -66,6 +66,13 @@ class QueueConnection
     const DEFAULT_PORT = 8587;
 
     /**
+     * The name of the webapp using this client connection.
+     *
+     * @var string
+     */
+    protected $appName;
+
+    /**
      * The default transport to use.
      *
      * @var string
@@ -108,10 +115,18 @@ class QueueConnection
     protected $client;
 
     /**
-     * Initializes the QueueConnection and the socket.
+     * Initializes the connection.
+     *
+     * @param string $appName Name of the webapp using this client connection
+     *
+     * @return void
      */
-    public function __construct()
+    public function __construct($appName = '')
     {
+
+        // set the application name
+        $this->appName = $appName;
+
         // initialize the message queue parser and the session
         $this->parser = new MessageQueueParser();
         $this->sessions = new \ArrayObject();
@@ -125,6 +140,28 @@ class QueueConnection
     public function getParser()
     {
         return $this->parser;
+    }
+
+    /**
+     * Sets the clients webapp name
+     *
+     * @param string $appName Name of the webapp using this client connection
+     *
+     * @return void
+     */
+    public function setAppName($appName)
+    {
+        $this->appName = $appName;
+    }
+
+    /**
+     * Returns the name of the webapp this connection is for
+     *
+     * @return string The webapp name
+     */
+    public function getAppName()
+    {
+        return $this->appName;
     }
 
     /**
@@ -241,18 +278,25 @@ class QueueConnection
         // serialize the message and write it to the socket
         $packed = MessageQueueProtocol::pack($message);
 
-        // laod the queue name
-        $queueName = $message->getDestination()->getName();
-
         // send a POST request
-        $request = $this->getSocket()->post($queueName);
+        $request = $this->getSocket()->post($this->getPath());
         $request->setBody($packed);
         $response = $request->send();
 
-        // check if we should wait for the response and it has to be validated
+        // check if we should validate the response
         if ($validateResponse && $response->getStatusCode() !== 200) {
             throw new \Exception($response->getBody());
         }
+    }
+
+    /**
+     * Prepares path for the connection to the persistence container.
+     *
+     * @return string The path to define the persistence container module
+     */
+    protected function getPath()
+    {
+        return sprintf('/%s/index.mq', $this->getAppName());
     }
 
     /**
