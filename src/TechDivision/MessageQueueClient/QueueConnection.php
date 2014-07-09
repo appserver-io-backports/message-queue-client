@@ -23,6 +23,7 @@
 namespace TechDivision\MessageQueueClient;
 
 use Guzzle\Http\Client;
+use Guzzle\Http\Exception\CurlException;
 use TechDivision\Server\Sockets\StreamSocket;
 use TechDivision\MessageQueueProtocol\Message;
 use TechDivision\MessageQueueProtocol\QueueResponse;
@@ -278,10 +279,30 @@ class QueueConnection
         // serialize the message and write it to the socket
         $packed = MessageQueueProtocol::pack($message);
 
-        // send a POST request
-        $request = $this->getSocket()->post($this->getPath());
-        $request->setBody($packed);
-        $response = $request->send();
+        // invoke the RMC with a number of retries
+        $maxRetries = 0;
+        $retry = true;
+        while ($retry) {
+
+            try {
+
+                // send a POST request
+                $request = $this->getSocket()->post($this->getPath(), array('timeout' => 5));
+                $request->setBody($packed);
+                $response = $request->send();
+
+                $retry = false;
+
+            } catch (CurlException $ce) {
+
+                $maxRetries++;
+
+                if ($maxRetries >= 5) {
+                    $retry = false;
+                    throw $ce;
+                }
+            }
+        }
 
         // check if we should validate the response
         if ($validateResponse && $response->getStatusCode() !== 200) {
