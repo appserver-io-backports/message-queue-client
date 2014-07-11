@@ -1,21 +1,14 @@
 {
     "name": "techdivision/messagequeueclient",
-    "type": "package",
     "description": "Client to connect to a PHP ApplicationServer based message queue.",
     "homepage": "https://github.com/techdivision/TechDivision_MessageQueueClient",
     "license": ["OSL-3.0"],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/techdivision/TechDivision_MessageQueueClient"
-        }
-    ],
     "require": {
         "php" : ">=5.4.0",
-        "techdivision/messagequeueprotocol": "dev-master"
+        "techdivision/messagequeueprotocol": "0.1.*"
     },
     "autoload": {
-        "psr-0": {"TechDivision": "src/"}
+        "psr-0": {"TechDivision\\MessageQueueClient": "src/"}
     },
     "config":{
         "github-oauth":{
