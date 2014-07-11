@@ -4,14 +4,16 @@
     "homepage": "https://github.com/techdivision/TechDivision_MessageQueueClient",
     "license": ["OSL-3.0"],
     "require": {
-        "php" : ">=5.4.0",
+        "php": ">=5.4.0",
         "techdivision/messagequeueprotocol": "0.1.*"
     },
     "autoload": {
-        "psr-0": {"TechDivision\\MessageQueueClient": "src/"}
+        "psr-0": {
+            "TechDivision\\MessageQueueClient": ["src/","tests/"]
+        }
     },
-    "config":{
-        "github-oauth":{
+    "config": {
+        "github-oauth": {
             "github.com":"604a3b5943228e434a5b52c2ba3cf72286d30db9"
         }
     }
