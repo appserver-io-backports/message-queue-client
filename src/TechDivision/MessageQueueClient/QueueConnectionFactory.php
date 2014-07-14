@@ -39,19 +39,22 @@ class QueueConnectionFactory
 
     /**
      * Private constructor to use class only in static context.
+     *
+     * @return void
      */
     protected function __construct()
     {
-
     }
 
     /**
      * Returns the QueueConnection instance as singleton.
      *
+     * @param string $appName Name of the webapp using this client connection
+     *
      * @return QueueConnection The singleton instance
      */
-    public static function createQueueConnection()
+    public static function createQueueConnection($appName)
     {
-        return new QueueConnection();
+        return new QueueConnection($appName);
     }
 }

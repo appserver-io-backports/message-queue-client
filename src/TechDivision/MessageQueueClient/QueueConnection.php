@@ -22,6 +22,8 @@
 
 namespace TechDivision\MessageQueueClient;
 
+use Guzzle\Http\Client;
+use Guzzle\Http\Exception\CurlException;
 use TechDivision\Server\Sockets\StreamSocket;
 use TechDivision\MessageQueueProtocol\Message;
 use TechDivision\MessageQueueProtocol\QueueResponse;
@@ -48,21 +50,49 @@ class QueueConnection
      *
      * @var string
      */
-    protected $transport = 'tcp';
+    const DEFAULT_SCHEME = 'http';
 
     /**
-     * Holds the IP address or domain name of the server the message queue is running on.
+     * The default client sockets IP address.
      *
      * @var string
      */
-    protected $address = "127.0.0.1";
+    const DEFAULT_HOST = '127.0.0.1';
 
     /**
-     * Holds the port for the connection.
+     * The default client sockets port.
      *
      * @var integer
      */
-    protected $port = 8587;
+    const DEFAULT_PORT = 8587;
+
+    /**
+     * The name of the webapp using this client connection.
+     *
+     * @var string
+     */
+    protected $appName;
+
+    /**
+     * The default transport to use.
+     *
+     * @var string
+     */
+    protected $transport = QueueConnection::DEFAULT_SCHEME;
+
+    /**
+     * The client socket's IP address.
+     *
+     * @var string
+     */
+    protected $address = QueueConnection::DEFAULT_HOST;
+
+    /**
+     * The client socket's port.
+     *
+     * @var integer
+     */
+    protected $port = QueueConnection::DEFAULT_PORT;
 
     /**
      * Holds an ArrayList with the initialized sessions.
@@ -79,10 +109,25 @@ class QueueConnection
     protected $parser;
 
     /**
-     * Initializes the QueueConnection and the socket.
+     * The HTTP client we use for connection to the persistence container.
+     *
+     * @var \Guzzle\Http\Client
      */
-    public function __construct()
+    protected $client;
+
+    /**
+     * Initializes the connection.
+     *
+     * @param string $appName Name of the webapp using this client connection
+     *
+     * @return void
+     */
+    public function __construct($appName = '')
     {
+
+        // set the application name
+        $this->appName = $appName;
+
         // initialize the message queue parser and the session
         $this->parser = new MessageQueueParser();
         $this->sessions = new \ArrayObject();
@@ -96,6 +141,28 @@ class QueueConnection
     public function getParser()
     {
         return $this->parser;
+    }
+
+    /**
+     * Sets the clients webapp name
+     *
+     * @param string $appName Name of the webapp using this client connection
+     *
+     * @return void
+     */
+    public function setAppName($appName)
+    {
+        $this->appName = $appName;
+    }
+
+    /**
+     * Returns the name of the webapp this connection is for
+     *
+     * @return string The webapp name
+     */
+    public function getAppName()
+    {
+        return $this->appName;
     }
 
     /**
@@ -167,60 +234,102 @@ class QueueConnection
     }
 
     /**
-     * Returns the client socket instance.
-     *
-     * @return \TechDivision\Socket\Client The socket instance
-     */
-    public function getSocket()
-    {
-    }
-
-    /**
-     * Initializes the connection by starting the socket.
+     * Creates the connection to the container.
      *
      * @return void
      */
-    protected function connect()
+    public function connect()
     {
+        $this->client = new Client($this->getBaseUrl());
     }
 
     /**
-     * Closes the connection to the server by closing the socket.
+     * Shutdown the connection to the container.
      *
      * @return void
      */
     public function disconnect()
     {
+        $this->client = null;
+    }
+
+    /**
+     * Returns the socket the connection is based on.
+     *
+     * @return \Guzzle\Http\Client The socket instance
+     */
+    public function getSocket()
+    {
+        return $this->client;
     }
 
     /**
      * Sends a Message to the server by writing it to the socket.
      *
      * @param \TechDivision\MessageQueueClient\Interfaces\Message $message          Holds the message to send
-     * @param boolean                                             $validateResponse If this flag is true,
-     *      the QueueConnection waits for the MessageQueue response and validates it
+     * @param boolean                                             $validateResponse If this flag is TRUE, the QueueConnection validates the response code
      *
      * @return \TechDivision\MessageQueueClient\QueueResponse The response of the MessageQueue, or null
      */
     public function send(Message $message, $validateResponse = false)
     {
-
-        // connect to the persistence container
-        $clientConnection = StreamSocket::getClientInstance(
-            $this->getTransport() . '://' . $this->getAddress() . ':' . $this->getPort()
-        );
+        // connect to the server if necessary
+        $this->connect();
 
         // serialize the message and write it to the socket
         $packed = MessageQueueProtocol::pack($message);
 
-        // invoke the remote method call
-        $clientConnection->write(MessageQueueProtocol::prepareMessageHeader($packed));
-        $clientConnection->write($packed);
+        // invoke the RMC with a number of retries
+        $maxRetries = 0;
+        $retry = true;
+        while ($retry) {
 
-        // check if we should wait for the response and it has to be validated
-        if ($validateResponse === true) {
-            return $this->getParser()->parseResponse($clientConnection->readLine());
+            try {
+
+                // send a POST request
+                $request = $this->getSocket()->post($this->getPath(), array('timeout' => 5));
+                $request->setBody($packed);
+                $response = $request->send();
+
+                $retry = false;
+
+            } catch (CurlException $ce) {
+
+                $maxRetries++;
+
+                if ($maxRetries >= 5) {
+                    $retry = false;
+                    throw $ce;
+                }
+            }
         }
+
+        // check if we should validate the response
+        if ($validateResponse && $response->getStatusCode() !== 200) {
+            throw new \Exception($response->getBody());
+        }
+    }
+
+    /**
+     * Prepares path for the connection to the persistence container.
+     *
+     * @return string The path to define the persistence container module
+     */
+    protected function getPath()
+    {
+        return sprintf('/%s/index.mq', $this->getAppName());
+    }
+
+    /**
+     * Prepares the base URL we used for the connection
+     * to the persistence container.
+     *
+     * @return string The default base URL
+     */
+    protected function getBaseUrl()
+    {
+        // initialize the requeste URL with the default connection values
+        return $this->getTransport() . '://' . $this->getAddress() . ':' . $this->getPort();
     }
 
     /**
