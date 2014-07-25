@@ -1,20 +1,42 @@
 {
-    "name": "techdivision/messagequeueclient",
-    "description": "Client to connect to a PHP ApplicationServer based message queue.",
-    "homepage": "https://github.com/techdivision/TechDivision_MessageQueueClient",
-    "license": ["OSL-3.0"],
-    "require": {
-        "php": ">=5.4.0",
-        "techdivision/messagequeueprotocol": "0.2.*"
-    },
-    "autoload": {
-        "psr-0": {
-            "TechDivision\\MessageQueueClient": ["src/","tests/"]
-        }
-    },
-    "config": {
-        "github-oauth": {
-            "github.com":"604a3b5943228e434a5b52c2ba3cf72286d30db9"
-        }
-    }
+	"name" : "techdivision/messagequeueclient",
+	"description" : "Client to connect to a PHP ApplicationServer based message queue.",
+	"homepage" : "https://github.com/techdivision/TechDivision_MessageQueueClient",
+	"license" : "OSL-3.0",
+	"authors" : [{
+			"name" : "Tim Wagner",
+			"email" : "t.wagner@techdivision.com",
+			"homepage" : "https://github.com/wagnert",
+			"role" : "Developer"
+		}
+	],
+	"require" : {
+		"php" : ">=5.4.0",
+		"techdivision/messagequeueprotocol" : "0.2.*"
+	},
+	"require-dev" : {
+		"phpunit/phpunit" : "3.7.*",
+		"appserver-io/build" : "0.1.*"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"TechDivision\\MessageQueueClient" : [
+				"src/",
+				"tests/"
+			]
+		}
+	},
+	"config" : {
+		"github-oauth" : {
+			"github.com" : "604a3b5943228e434a5b52c2ba3cf72286d30db9"
+		}
+	},
+	"support" : {
+        "email" : "t.wagner@techdivision.com",
+		"issues" : "https://github.com/techdivision/TechDivision_MessageQueueClient/issues",
+		"source" : "https://github.com/techdivision/TechDivision_MessageQueueClient"
+	},
+	"keywords" : [
+		"message queue client"
+	]
 }

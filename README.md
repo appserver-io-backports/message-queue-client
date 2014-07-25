@@ -18,6 +18,14 @@ If you want to use the library with your application you can install it by addin
 }
 ```
 
+to your ```composer.json``` and invoke ```composer update``` in your project.
+
 ## Usage
 
 Coming soon!
+
+# External Links
+
+* appserver.io [combined documentation](http://docs.appserver.io)
+* [Getting started](https://github.com/techdivision/TechDivision_AppserverDocumentation/tree/master/docs/getting-started)
+* Documentation found on [GitHub](https://github.com/techdivision/TechDivision_AppserverDocumentation)

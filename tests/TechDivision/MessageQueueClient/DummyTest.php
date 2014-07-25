@@ -23,9 +23,7 @@
 namespace TechDivision\MessageQueueClient;
 
 /**
- * \TechDivision\MessageQueue\DummyTest
- *
- * Basic test to be built upon
+ * Dummy test implementation.
  *
  * @category  Library
  * @package   TechDivision_MessageQueueClient
@@ -37,6 +35,7 @@ namespace TechDivision\MessageQueueClient;
  */
 class DummyTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * Test is a dummy test integration.
      *
