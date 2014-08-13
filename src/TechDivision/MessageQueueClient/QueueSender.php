@@ -23,6 +23,7 @@ namespace TechDivision\MessageQueueClient;
 
 use \TechDivision\MessageQueueProtocol\Message;
 use \TechDivision\MessageQueueProtocol\Queue;
+use \TechDivision\MessageQueueProtocol\QueueProxy;
 use \TechDivision\MessageQueueClient\QueueSession;
 
 /**
@@ -76,7 +77,12 @@ class QueueSender
      */
     public function send(Message $message, $validateResponse = false)
     {
-        $message->setDestination($this->queue);
+
+        // create a new queue proxy instance, because we want to send it over a network)
+        $queueProxy = QueueProxy::createFromQueue($this->queue);
+
+        // prepare and send the message
+        $message->setDestination($queueProxy);
         $message->setSessionId($this->session->getId());
         return $this->session->send($message, $validateResponse);
     }

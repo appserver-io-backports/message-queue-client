@@ -24,7 +24,6 @@ namespace TechDivision\MessageQueueClient;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Exception\CurlException;
-use TechDivision\Server\Sockets\StreamSocket;
 use TechDivision\MessageQueueProtocol\Message;
 use TechDivision\MessageQueueProtocol\QueueResponse;
 use TechDivision\MessageQueueProtocol\MessageQueueParser;

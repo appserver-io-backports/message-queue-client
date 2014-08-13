@@ -1,3 +1,13 @@
+# Version 0.6.2
+
+## Bugfixes
+
+* Use new QueueProxy class as DTO to send MessageQueue instance to message queue server
+
+## Features
+
+* None
+
 # Version 0.6.1
 
 ## Bugfixes
