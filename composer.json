@@ -12,7 +12,8 @@
 	],
 	"require" : {
 		"php" : ">=5.4.0",
-		"techdivision/messagequeueprotocol" : "0.2.*"
+		"techdivision/messagequeueprotocol" : "0.2.*",
+		"guzzle/guzzle" : "3.9.*"
 	},
 	"require-dev" : {
 		"phpunit/phpunit" : "3.7.*",
@@ -32,7 +33,7 @@
 		}
 	},
 	"support" : {
-        "email" : "t.wagner@techdivision.com",
+		"email" : "t.wagner@techdivision.com",
 		"issues" : "https://github.com/techdivision/TechDivision_MessageQueueClient/issues",
 		"source" : "https://github.com/techdivision/TechDivision_MessageQueueClient"
 	},
